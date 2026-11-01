@@ -1,0 +1,824 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b14">
+<title>LockIn — Focus. Earn XP. Level Up.</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: #080b14;
+  color: #f5f7ff;
+  font-family: Arial, sans-serif;
+  padding: 25px 16px;
+}
+
+.container {
+  width: 100%;
+  max-width: 760px;
+  margin: auto;
+}
+
+header {
+  text-align: center;
+  margin: 20px 0 30px;
+}
+
+.logo {
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #a78bfa;
+}
+
+.tagline {
+  color: #929bb2;
+  margin-top: 9px;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.card {
+  background: #111827;
+  border: 1px solid #253047;
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 17px;
+}
+
+.section-title {
+  font-size: 13px;
+  color: #a78bfa;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 14px;
+  background: #080d19;
+  color: white;
+  border: 1px solid #34415a;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #a78bfa;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 13px 17px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  filter: brightness(1.15);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.primary {
+  background: #8b5cf6;
+  color: white;
+}
+
+.secondary {
+  background: #26334b;
+  color: white;
+}
+
+.danger {
+  background: #3b2634;
+  color: #ff9ba9;
+}
+
+.full {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.mission-display {
+  color: #d7dced;
+  margin-top: 14px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.timer-card {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.timer {
+  font-size: clamp(58px, 13vw, 85px);
+  font-weight: 800;
+  letter-spacing: 3px;
+  margin: 20px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-status {
+  color: #9ca9c2;
+  font-size: 13px;
+  min-height: 20px;
+  line-height: 1.5;
+}
+
+.duration-select {
+  max-width: 180px;
+  margin: 10px auto 18px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.controls button {
+  min-width: 100px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.stat {
+  background: #0b1220;
+  border: 1px solid #26334b;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.stat-label {
+  color: #8d9ab2;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.rank-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.rank {
+  font-size: 22px;
+  font-weight: bold;
+  color: #c4b5fd;
+}
+
+.xp-text {
+  color: #aeb8ca;
+  font-size: 13px;
+}
+
+.progress-bg {
+  height: 11px;
+  background: #26334b;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 17px 0 10px;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #7c3aed, #38bdf8);
+  border-radius: 20px;
+  transition: width 0.3s;
+}
+
+.next-rank {
+  color: #9ca9c2;
+  font-size: 12px;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid #253047;
+  font-size: 13px;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-name {
+  overflow-wrap: anywhere;
+  color: #dbe2f0;
+}
+
+.history-xp {
+  color: #a78bfa;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.muted {
+  color: #8793a9;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.footer {
+  text-align: center;
+  color: #64718a;
+  font-size: 11px;
+  margin: 25px 0 10px;
+}
+
+@media (max-width: 420px) {
+  .card {
+    padding: 17px;
+  }
+
+  .controls button {
+    flex: 1;
+    min-width: 85px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">LOCKIN.</div>
+  <div class="tagline">FOCUS. EARN XP. LEVEL UP.</div>
+</header>
+
+<section class="card">
+  <div class="section-title">YOUR MISSION</div>
+
+  <input
+    id="missionInput"
+    type="text"
+    maxlength="100"
+    placeholder="What is your one mission today?"
+  >
+
+  <button class="primary full" id="setMission">
+    LOCK IN MISSION
+  </button>
+
+  <div class="mission-display" id="mission">
+    No mission selected
+  </div>
+</section>
+
+<section class="card timer-card">
+  <div class="section-title">FOCUS SESSION</div>
+
+  <select id="duration" class="duration-select">
+    <option value="15">15 Minutes</option>
+    <option value="25" selected>25 Minutes</option>
+    <option value="45">45 Minutes</option>
+    <option value="60">60 Minutes</option>
+  </select>
+
+  <div class="timer" id="timer">25:00</div>
+
+  <div class="timer-status" id="timerStatus">
+    Ready when you are.
+  </div>
+
+  <div class="controls" style="margin-top:22px">
+    <button class="primary" id="start">START FOCUS</button>
+    <button class="secondary" id="pause">PAUSE</button>
+    <button class="danger" id="reset">RESET</button>
+  </div>
+</section>
+
+<section class="card">
+  <div class="section-title">YOUR PROGRESSION</div>
+
+  <div class="rank-row">
+    <div class="rank" id="rank">RANK E</div>
+    <div class="xp-text" id="xpText">0 XP earned</div>
+  </div>
+
+  <div class="progress-bg">
+    <div class="progress-bar" id="xpBar"></div>
+  </div>
+
+  <div class="next-rank" id="nextRank">200 XP to RANK D</div>
+</section>
+
+<section class="card">
+  <div class="section-title">YOUR STATISTICS</div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">TOTAL XP</div>
+      <div class="stat-value" id="totalXP">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">SESSIONS</div>
+      <div class="stat-value" id="sessions">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">FOCUS MINUTES</div>
+      <div class="stat-value" id="minutes">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">DAY STREAK</div>
+      <div class="stat-value" id="streak">0 🔥</div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="section-title">RECENT MISSIONS</div>
+  <div id="history">
+    <p class="muted">
+      Your completed sessions will appear here.
+    </p>
+  </div>
+</section>
+
+<div class="footer">
+  LOCKIN © 2026 · BUILD YOUR FOCUS
+</div>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const levels = [
+  { name: "E", min: 0 },
+  { name: "D", min: 200 },
+  { name: "C", min: 500 },
+  { name: "B", min: 900 },
+  { name: "A", min: 1400 },
+  { name: "S", min: 2000 }
+];
+
+function readStorage(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch (error) {
+    return fallback;
+  }
+}
+
+let data = readStorage("lockinData", {});
+
+data.xp = Number(data.xp) || 0;
+data.sessions = Number(data.sessions) || 0;
+data.minutes = Number(data.minutes) || 0;
+data.streak = Number(data.streak) || 0;
+data.lastDate = data.lastDate || "";
+data.history = Array.isArray(data.history) ? data.history : [];
+data.mission = data.mission || "";
+
+let seconds = 1500;
+let deadline = null;
+let interval = null;
+let running = false;
+let finished = false;
+let audioContext = null;
+
+function save() {
+  localStorage.setItem("lockinData", JSON.stringify(data));
+}
+
+function today() {
+  const d = new Date();
+
+  return [
+    d.getFullYear(),
+    String(d.getMonth() + 1).padStart(2, "0"),
+    String(d.getDate()).padStart(2, "0")
+  ].join("-");
+}
+
+function yesterday() {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+
+  return [
+    d.getFullYear(),
+    String(d.getMonth() + 1).padStart(2, "0"),
+    String(d.getDate()).padStart(2, "0")
+  ].join("-");
+}
+
+function saveTimer() {
+  localStorage.setItem("lockinTimer", JSON.stringify({
+    seconds,
+    deadline,
+    running,
+    finished,
+    mission: data.mission,
+    duration: Number($("duration").value)
+  }));
+}
+
+function stopInterval() {
+  if (interval !== null) {
+    clearInterval(interval);
+  }
+  interval = null;
+}
+
+function updateTimer() {
+  const min = Math.floor(seconds / 60);
+  const sec = seconds % 60;
+
+  $("timer").textContent =
+    String(min).padStart(2, "0") + ":" +
+    String(sec).padStart(2, "0");
+}
+
+function updateRank() {
+  let current = levels[0];
+
+  for (const level of levels) {
+    if (data.xp >= level.min) current = level;
+  }
+
+  const next = levels.find(level => level.min > data.xp);
+
+  $("rank").textContent = "RANK " + current.name;
+  $("xpText").textContent = data.xp + " XP earned";
+
+  if (next) {
+    const progress =
+      ((data.xp - current.min) /
+      (next.min - current.min)) * 100;
+
+    $("xpBar").style.width = progress + "%";
+    $("nextRank").textContent =
+      (next.min - data.xp) + " XP to RANK " + next.name;
+  } else {
+    $("xpBar").style.width = "100%";
+    $("nextRank").textContent = "MAX RANK ACHIEVED!";
+  }
+}
+
+function render() {
+  $("sessions").textContent = data.sessions;
+  $("minutes").textContent = data.minutes;
+  $("streak").textContent = data.streak + " 🔥";
+  $("totalXP").textContent = data.xp;
+  $("mission").textContent =
+    data.mission || "No mission selected";
+
+  updateRank();
+
+  const history = $("history");
+  history.replaceChildren();
+
+  if (!data.history.length) {
+    const p = document.createElement("p");
+    p.className = "muted";
+    p.textContent =
+      "Your completed sessions will appear here.";
+    history.appendChild(p);
+  }
+
+  data.history.slice(0, 10).forEach(item => {
+    const row = document.createElement("div");
+    row.className = "history-item";
+
+    const name = document.createElement("span");
+    name.className = "history-name";
+    name.textContent =
+      `${item.mission} (${item.minutes}m)`;
+
+    const reward = document.createElement("strong");
+    reward.className = "history-xp";
+    reward.textContent = "+" + item.xp + " XP";
+
+    row.append(name, reward);
+    history.appendChild(row);
+  });
+
+  save();
+}
+
+function updateControls() {
+  $("duration").disabled = running;
+  $("setMission").disabled = running;
+  $("missionInput").disabled = running;
+  $("start").disabled = running;
+  $("pause").disabled = !running;
+}
+
+function prepareAudio() {
+  try {
+    if (!audioContext) {
+      const Audio = window.AudioContext ||
+                    window.webkitAudioContext;
+
+      if (Audio) audioContext = new Audio();
+    }
+
+    if (audioContext && audioContext.state === "suspended") {
+      audioContext.resume();
+    }
+  } catch (error) {
+    // Sound is optional.
+  }
+}
+
+function playChime() {
+  try {
+    if (!audioContext || audioContext.state !== "running") return;
+
+    [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+
+      const startAt = audioContext.currentTime + i * 0.13;
+
+      osc.type = "triangle";
+      osc.frequency.value = freq;
+
+      gain.gain.setValueAtTime(0.12, startAt);
+      gain.gain.exponentialRampToValueAtTime(
+        0.001, startAt + 0.35
+      );
+
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+
+      osc.start(startAt);
+      osc.stop(startAt + 0.35);
+    });
+  } catch (error) {
+    // Sound is optional.
+  }
+}
+
+function completeSession() {
+  if (finished) return;
+
+  finished = true;
+  running = false;
+  stopInterval();
+
+  const duration = Number($("duration").value);
+  const earnedXP = duration * 2;
+  const date = today();
+
+  data.xp += earnedXP;
+  data.sessions++;
+  data.minutes += duration;
+
+  if (data.lastDate !== date) {
+    data.streak =
+      data.lastDate === yesterday()
+        ? data.streak + 1
+        : 1;
+
+    data.lastDate = date;
+  }
+
+  data.history.unshift({
+    mission: data.mission,
+    xp: earnedXP,
+    date,
+    minutes: duration
+  });
+
+  data.history = data.history.slice(0, 30);
+
+  seconds = 0;
+  deadline = null;
+
+  updateTimer();
+
+  $("timerStatus").textContent =
+    `Mission completed! +${earnedXP} XP earned.`;
+
+  render();
+  saveTimer();
+  updateControls();
+  playChime();
+}
+
+function tick() {
+  if (!running) return;
+
+  seconds = Math.max(
+    0,
+    Math.ceil((deadline - Date.now()) / 1000)
+  );
+
+  updateTimer();
+
+  if (seconds <= 0) {
+    completeSession();
+  }
+}
+
+function startTimer() {
+  if (running) return;
+
+  if (!data.mission.trim()) {
+    alert("Please set your mission first.");
+    return;
+  }
+
+  prepareAudio();
+
+  if (finished || seconds <= 0) {
+    finished = false;
+    seconds = Number($("duration").value) * 60;
+  }
+
+  running = true;
+  deadline = Date.now() + seconds * 1000;
+
+  $("timerStatus").textContent =
+    "Stay focused. You've got this.";
+
+  stopInterval();
+  updateControls();
+  tick();
+
+  if (running) {
+    interval = setInterval(tick, 500);
+  }
+
+  saveTimer();
+}
+
+function pauseTimer() {
+  if (!running) return;
+
+  tick();
+
+  if (!running) return;
+
+  running = false;
+  stopInterval();
+
+  $("timerStatus").textContent = "Session paused.";
+
+  updateControls();
+  saveTimer();
+}
+
+function resetTimer() {
+  running = false;
+  finished = false;
+
+  stopInterval();
+
+  seconds = Number($("duration").value) * 60;
+  deadline = null;
+
+  $("timerStatus").textContent = "Ready when you are.";
+
+  updateTimer();
+  updateControls();
+  saveTimer();
+}
+
+function handleSetMission() {
+  const value = $("missionInput").value.trim();
+
+  if (!value) {
+    alert("Enter your mission first.");
+    return;
+  }
+
+  if (running) {
+    alert("Pause your current session first.");
+    return;
+  }
+
+  data.mission = value;
+  $("missionInput").value = "";
+
+  resetTimer();
+  render();
+  saveTimer();
+}
+
+function restoreTimer() {
+  const saved = readStorage("lockinTimer", null);
+
+  if (!saved || saved.mission !== data.mission) {
+    updateTimer();
+    updateControls();
+    return;
+  }
+
+  const allowedDurations = [15, 25, 45, 60];
+
+  if (!allowedDurations.includes(Number(saved.duration))) {
+    updateTimer();
+    updateControls();
+    return;
+  }
+
+  // Restore dropdown before calculating or completing the session.
+  $("duration").value = String(saved.duration);
+
+  seconds = Math.max(0, Number(saved.seconds) || 0);
+  deadline = saved.deadline;
+  finished = Boolean(saved.finished);
+  running = Boolean(saved.running);
+
+  if (running && deadline) {
+    tick();
+
+    if (running) {
+      interval = setInterval(tick, 500);
+      $("timerStatus").textContent =
+        "Focus session in progress.";
+    }
+  } else if (finished) {
+    $("timerStatus").textContent =
+      "Mission completed! Press Start for another round.";
+  } else {
+    $("timerStatus").textContent =
+      seconds < Number(saved.duration) * 60
+        ? "Session paused."
+        : "Ready when you are.";
+  }
+
+  updateTimer();
+  updateControls();
+}
+
+$("setMission").addEventListener("click", handleSetMission);
+
+$("missionInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    handleSetMission();
+  }
+});
+
+$("start").addEventListener("click", startTimer);
+$("pause").addEventListener("click", pauseTimer);
+$("reset").addEventListener("click", resetTimer);
+
+$("duration").addEventListener("change", () => {
+  if (running) return;
+  resetTimer();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (running) tick();
+});
+
+// Reset streak if the user missed yesterday.
+if (
+  data.lastDate &&
+  data.lastDate !== today() &&
+  data.lastDate !== yesterday()
+) {
+  data.streak = 0;
+  save();
+}
+
+render();
+restoreTimer();
+</script>
+
+</body>
+</html>
